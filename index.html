@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Sage One API Sample</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!--Framework css-->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+                rel="stylesheet" 
+                integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+                crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css">
+        <!--Our own css-->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body ng-app="app">
+        <nav class="navbar navbar-default navbar-extra-padding">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand">Sage One API Angular Sample</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+
+            <!--Company Section-->
+            <div class="panel panel-default" ng-controller="companyController">
+                <div class="panel-heading">List of Companies - Page: {{paging.currentPage}}</div>
+                <div class="panel-body">
+                    <!--Error Loading Companies-->
+                    <div class="alert alert-danger" ng-if="response.error">
+                        <strong>Error!</strong> {{response.error}}
+                    </div>
+                    <div class="list-group">
+                        <a class="list-group-item" 
+                            ng-repeat="company in companies" 
+                            ng-click="selectCompany(company)" 
+                            ng-class="{'active' : company.Selected}">{{company.Name}}</a>
+                    </div>
+                    <!--Paging-->
+                    <ul class="pagination" ng-if="paging.enabled">
+                        <li ng-click="gotoPage($index)" ng-repeat="page in [].constructor(paging.pages + 1) track by $index">
+                            <a ng-if="$index !== 0">{{$index}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--Customer Section-->
+            <div class="panel panel-default" ng-if="companyId" ng-controller="customerController">
+                <div class="panel-heading">List of Customers</div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a class="list-group-item" ng-repeat="customer in customers" ng-click="loadCustomer(customer)">
+                            <p ng-if="!customer.Selected">{{customer.Name}}</p>
+                            <div ng-if="customer.Selected">
+                                <div class="alert alert-danger" ng-if="response.error">
+                                    <strong>Error!</strong> {{response.error}}
+                                </div>
+                                <div class="alert alert-success" ng-if="response.success">
+                                    <strong>Success!</strong> Changes Saved
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="name" placeholder="Name" ng-model="customer.Name">
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="email" placeholder="Email" ng-model="customer.Email">
+                                </div>
+                                <button class="btn btn-default" ng-click="updateCustomer(customer)">Update</button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Framework js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>.
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+                    integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" 
+                    crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+                    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+                    crossorigin="anonymous"></script>
+        <!--Our own js-->
+        <script src="app.js"></script>
+        <script src="interceptor.js"></script>
+        <script src="companyService.js"></script>
+        <script src="customerService.js"></script>
+        <script src="companyController.js"></script>
+        <script src="customerController.js"></script>
+    
+</body></html>
